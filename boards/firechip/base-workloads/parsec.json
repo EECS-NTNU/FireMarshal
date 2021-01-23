@@ -1,0 +1,7 @@
+{
+  "name" : "parsec",
+  "base" : "ntnu-base.json",
+  "overlay" : "overlay",
+  "host-init": "host-init.sh",
+  "rootfs-size" : "5GB"
+}

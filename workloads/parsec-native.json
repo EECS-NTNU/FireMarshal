@@ -1,0 +1,46 @@
+{
+    "name": "parsec-native",
+    "base": "parsec.json",
+    "workdir": "common",
+    "overlay": "empty",
+    "guest-init": "prepareGuest.sh /opt/parsec --suite parsec --input native",
+    "rootfs-size": "0",
+	"outputs": [  "/opt/parsec/output" ],
+    "jobs": [
+        {
+            "name": "blackscholes",
+            "guest-init": "prepareGuest.sh /opt/parsec --wrapper time --wrapper pmapelf --input native -- blackscholes",
+            "command": "/opt/parsec/run.sh"
+        },
+        {
+            "name": "bodytrack",
+            "guest-init": "prepareGuest.sh /opt/parsec --wrapper time --wrapper pmapelf --input native -- bodytrack",
+            "command": "/opt/parsec/run.sh"
+        },
+        {
+            "name": "fluidanimate",
+            "guest-init": "prepareGuest.sh /opt/parsec --wrapper time --wrapper pmapelf --input native -- fluidanimate",
+            "command": "/opt/parsec/run.sh"
+        },
+        {
+            "name": "freqmine",
+            "guest-init": "prepareGuest.sh /opt/parsec --wrapper time --wrapper pmapelf --input native -- freqmine",
+            "command": "/opt/parsec/run.sh"
+        },
+        {
+            "name": "swaptions",
+            "guest-init": "prepareGuest.sh /opt/parsec --wrapper time --wrapper pmapelf --input native -- swaptions",
+            "command": "/opt/parsec/run.sh"
+        },
+        {
+            "name": "x264",
+            "guest-init": "prepareGuest.sh /opt/parsec --wrapper time --wrapper pmapelf --input native -- x264",
+            "command": "/opt/parsec/run.sh"
+        },
+        {
+            "name": "streamcluster",
+            "guest-init": "prepareGuest.sh /opt/parsec --wrapper time --wrapper pmapelf --input native -- streamcluster",
+            "command": "/opt/parsec/run.sh"
+        }
+    ]
+}

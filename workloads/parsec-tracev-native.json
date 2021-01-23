@@ -1,0 +1,46 @@
+{
+    "name": "parsec-tracev-native",
+    "base": "parsec.json",
+    "workdir": "common",
+    "overlay": "empty",
+    "guest-init": "prepareGuest.sh /opt/parsec --suite parsec --precmd firesim-start-trigger --postcmd firesim-end-trigger --input native",
+    "rootfs-size": "0",
+	"outputs": [  "/opt/parsec/output" ],
+    "jobs": [
+        {
+            "name": "blackscholes",
+            "guest-init": "prepareGuest.sh /opt/parsec --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input native -- blackscholes",
+            "command": "/opt/parsec/run.sh"
+        },
+        {
+            "name": "bodytrack",
+            "guest-init": "prepareGuest.sh /opt/parsec --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input native -- bodytrack",
+            "command": "/opt/parsec/run.sh"
+        },
+        {
+            "name": "fluidanimate",
+            "guest-init": "prepareGuest.sh /opt/parsec --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input native -- fluidanimate",
+            "command": "/opt/parsec/run.sh"
+        },
+        {
+            "name": "freqmine",
+            "guest-init": "prepareGuest.sh /opt/parsec --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input native -- freqmine",
+            "command": "/opt/parsec/run.sh"
+        },
+        {
+            "name": "swaptions",
+            "guest-init": "prepareGuest.sh /opt/parsec --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input native -- swaptions",
+            "command": "/opt/parsec/run.sh"
+        },
+        {
+            "name": "x264",
+            "guest-init": "prepareGuest.sh /opt/parsec --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input native -- x264",
+            "command": "/opt/parsec/run.sh"
+        },
+        {
+            "name": "streamcluster",
+            "guest-init": "prepareGuest.sh /opt/parsec --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input native -- streamcluster",
+            "command": "/opt/parsec/run.sh"
+        }
+    ]
+}

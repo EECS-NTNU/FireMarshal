@@ -1,0 +1,216 @@
+{
+    "name": "spec2017-tracev-ref",
+    "base": "spec2017.json",
+    "workdir": "common",
+    "overlay": "empty",
+    "guest-init": "prepareGuest.sh /opt/spec2017 --suite spec2017 --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref",
+    "rootfs-size": "0",
+	"outputs": [  "/opt/spec2017/output" ],
+    "jobs": [
+        {
+            "name": "500.perlbench_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 500.perlbench_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "502.gcc_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 502.gcc_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "503.bwaves_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 503.bwaves_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "505.mcf_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 505.mcf_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "507.cactuBSSN_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 507.cactuBSSN_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "508.namd_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 508.namd_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "510.parest_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 510.parest_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "511.povray_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 511.povray_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "519.lbm_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 519.lbm_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "520.omnetpp_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 520.omnetpp_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "521.wrf_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 521.wrf_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "523.xalancbmk_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 523.xalancbmk_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "525.x264_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 525.x264_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "527.cam4_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 527.cam4_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "531.deepsjeng_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 531.deepsjeng_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "538.imagick_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 538.imagick_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "541.leela_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 541.leela_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "544.nab_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 544.nab_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "548.exchange2_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 548.exchange2_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "549.fotonik3d_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 549.fotonik3d_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "554.roms_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 554.roms_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "557.xz_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 557.xz_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "600.perlbench_s",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 600.perlbench_s",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "602.gcc_s",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 602.gcc_s",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "603.bwaves_s",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 603.bwaves_s",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "605.mcf_s",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 605.mcf_s",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "607.cactuBSSN_s",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 607.cactuBSSN_s",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "619.lbm_s",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 619.lbm_s",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "620.omnetpp_s",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 620.omnetpp_s",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "621.wrf_s",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 621.wrf_s",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "623.xalancbmk_s",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 623.xalancbmk_s",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "625.x264_s",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 625.x264_s",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "628.pop2_s",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 628.pop2_s",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "631.deepsjeng_s",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 631.deepsjeng_s",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "638.imagick_s",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 638.imagick_s",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "641.leela_s",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 641.leela_s",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "644.nab_s",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 644.nab_s",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "648.exchange2_s",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 648.exchange2_s",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "649.fotonik3d_s",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 649.fotonik3d_s",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "654.roms_s",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 654.roms_s",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "657.xz_s",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref -- 657.xz_s",
+            "command": "/opt/spec2017/run.sh"
+        }
+    ]
+}

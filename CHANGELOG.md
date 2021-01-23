@@ -3,6 +3,21 @@
 This changelog follows the format defined here: https://keepachangelog.com/en/1.0.0/
 Versioning follows semantic versioning as described here: https://semver.org/spec/v2.0.0.html
 
+
+# 2020-07-30
+This is the initial commit of the NTNU fork
+
+### Added
+* ntnu-base image based on a recent buildroot and **recent toolchain** (gcc-10)
+  includes perf, pperf and invoke.py tools and stress-ng
+
+### Changed
+* wlutil.py reads the gcc version now properly from the version string
+* wlutil.py if e2fsck fails, it tries to repair it again with '-y' option before
+  completely failing to repair e.g. broken symbolic links which are caused by
+  improper filesystem cleanup through ext2/ext4 mount/unmount in qemu
+
+
 ## [1.9.0] - 2021-05-21
 This is largely a maintenance release with a few minor features and a bunch of
 bug fixes. The most significant change is a bump to Linux 5.7rc3. The new

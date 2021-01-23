@@ -1,5 +1,6 @@
 import glob
 from .br import br
+from .br_ntnu import br_ntnu
 from .fedora import fedora as fed
 from .baremetal import bare
 import collections
@@ -116,6 +117,7 @@ configInherit = [
 distros = {
         'fedora' : fed.Builder(),
         'br' : br.Builder(),
+        'br_ntnu' : br_ntnu.Builder(),
         'bare' : bare.Builder()
         }
 
