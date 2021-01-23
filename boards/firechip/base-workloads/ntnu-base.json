@@ -1,0 +1,16 @@
+{
+  "name" : "ntnu-base",
+  "base" : "br_ntnu",
+  "overlay" : "overlay",
+  "linux-config" : "linux-config",
+  "post-bin" : "host-post.sh",
+  "host-init" : "host-init.sh",
+  "files" : [
+      [ "trigger/start", "/usr/bin/firesim-start-trigger"],
+      [ "trigger/end", "/usr/bin/firesim-end-trigger"],
+      [ "pmapelf/pmapelf", "/usr/bin/pmapelf"],
+      [ "pperf/pperf", "/usr/bin/pperf"],
+      [ "pperf/pperf-debug", "/usr/bin/pperf-debug"],
+      [ "pythonTools/invoke.py", "/usr/bin/invoke.py"]
+  ]
+}

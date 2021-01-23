@@ -1,0 +1,3 @@
+spec2017.tar.zst
+overlay/opt/spec2017/*
+!overlay/opt/spec2017/invoke.spec.json

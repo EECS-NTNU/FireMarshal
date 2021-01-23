@@ -1,0 +1,46 @@
+{
+    "name": "parsec.serial-simdev",
+    "base": "parsec.json",
+    "workdir": "common",
+    "overlay": "empty",
+    "guest-init": "prepareGuest.sh /opt/parsec --suite parsec -v threads=1 -v arch=serial.riscv-64 --input simdev",
+    "rootfs-size": "0",
+	"outputs": [  "/opt/parsec/output" ],
+    "jobs": [
+        {
+            "name": "blackscholes",
+            "guest-init": "prepareGuest.sh /opt/parsec --wrapper time -v threads=1 -v arch=serial.riscv-64 --input simdev -- blackscholes",
+            "command": "/opt/parsec/run.sh"
+        },
+        {
+            "name": "bodytrack",
+            "guest-init": "prepareGuest.sh /opt/parsec --wrapper time -v threads=1 -v arch=serial.riscv-64 --input simdev -- bodytrack",
+            "command": "/opt/parsec/run.sh"
+        },
+        {
+            "name": "fluidanimate",
+            "guest-init": "prepareGuest.sh /opt/parsec --wrapper time -v threads=1 -v arch=serial.riscv-64 --input simdev -- fluidanimate",
+            "command": "/opt/parsec/run.sh"
+        },
+        {
+            "name": "freqmine",
+            "guest-init": "prepareGuest.sh /opt/parsec --wrapper time -v threads=1 -v arch=serial.riscv-64 --input simdev -- freqmine",
+            "command": "/opt/parsec/run.sh"
+        },
+        {
+            "name": "swaptions",
+            "guest-init": "prepareGuest.sh /opt/parsec --wrapper time -v threads=1 -v arch=serial.riscv-64 --input simdev -- swaptions",
+            "command": "/opt/parsec/run.sh"
+        },
+        {
+            "name": "x264",
+            "guest-init": "prepareGuest.sh /opt/parsec --wrapper time -v threads=1 -v arch=serial.riscv-64 --input simdev -- x264",
+            "command": "/opt/parsec/run.sh"
+        },
+        {
+            "name": "streamcluster",
+            "guest-init": "prepareGuest.sh /opt/parsec --wrapper time -v threads=1 -v arch=serial.riscv-64 --input simdev -- streamcluster",
+            "command": "/opt/parsec/run.sh"
+        }
+    ]
+}

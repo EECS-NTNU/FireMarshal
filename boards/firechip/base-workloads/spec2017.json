@@ -1,0 +1,7 @@
+{
+  "name" : "spec2017",
+  "base" : "ntnu-base.json",
+  "overlay" : "overlay",
+  "host-init": "host-init.sh",
+  "rootfs-size" : "10GB"
+}

@@ -1,0 +1,3 @@
+parsec.tar.zst
+overlay/opt/parsec/*
+!overlay/opt/parsec/invoke.spec.json

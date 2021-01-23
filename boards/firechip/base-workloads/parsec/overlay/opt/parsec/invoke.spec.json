@@ -1,0 +1,465 @@
+{
+    "variables": {
+        "arch": "riscv-64",
+        "output": "/opt/parsec/output/",
+        "threads": "4",
+		"frequency": "100"
+    },
+    "wrappers": {
+        "pperf": "pperf -f %frequency% -o %output%%benchmark%_%input%%workload%.pperf --",
+        "perf": "perf record -e cpu-clock -a -o %output%%benchmark%_%input%%workload%.perf --",
+        "time": "/usr/bin/time -f \"%e %U %S\" -o %output%%benchmark%_%input%%workload%.time --",
+        "pmapelf": "pmapelf -v %output%%benchmark%_%input%%workload%.vmmap -o /dev/null --"
+    },
+    "specs": [
+        {
+            "input": "native",
+            "benchmarks": {
+                "blackscholes": {
+                    "exec": "blackscholes.%arch%",
+                    "inputs": {
+                        "native": {
+                            "workloads": [
+                                {
+                                    "params": "%threads% in_10M.txt prices.txt"
+                                }
+                            ]
+                        },
+                        "simdev": {
+                            "workloads": [
+                                {
+                                    "params": "%threads% in_16.txt prices.txt"
+                                }
+                            ]
+                        },
+                        "simlarge": {
+                            "workloads": [
+                                {
+                                    "params": "%threads% in_64K.txt prices.txt"
+                                }
+                            ]
+                        },
+                        "simmedium": {
+                            "workloads": [
+                                {
+                                    "params": "%threads% in_16K.txt prices.txt"
+                                }
+                            ]
+                        },
+                        "simsmall": {
+                            "workloads": [
+                                {
+                                    "params": "%threads% in_4K.txt prices.txt"
+                                }
+                            ]
+                        },
+                        "test": {
+                            "workloads": [
+                                {
+                                    "params": "%threads% in_4.txt prices.txt"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "bodytrack": {
+                    "exec": "bodytrack.%arch%",
+                    "inputs": {
+                        "native": {
+                            "workloads": [
+                                {
+                                    "params": "sequenceB_261 4 261 4000 5 0 %threads%"
+                                }
+                            ]
+                        },
+                        "simdev": {
+                            "workloads": [
+                                {
+                                    "params": "sequenceB_1 4 1 100 3 0 %threads%"
+                                }
+                            ]
+                        },
+                        "simlarge": {
+                            "workloads": [
+                                {
+                                    "params": "sequenceB_4 4 4 4000 5 0 %threads%"
+                                }
+                            ]
+                        },
+                        "simmedium": {
+                            "workloads": [
+                                {
+                                    "params": "sequenceB_2 4 2 2000 5 0 %threads%"
+                                }
+                            ]
+                        },
+                        "simsmall": {
+                            "workloads": [
+                                {
+                                    "params": "sequenceB_1 4 1 1000 5 0 %threads%"
+                                }
+                            ]
+                        },
+                        "test": {
+                            "workloads": [
+                                {
+                                    "params": "sequenceB_1 4 1 5 1 0 %threads%"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "facesim": {
+					"disabled": true,
+                    "exec": "facesim.%arch%",
+                    "inputs": {
+                        "native": {
+                            "workloads": [
+                                {
+                                    "params": "-timing -threads %threads% -lastframe 100"
+                                }
+                            ]
+                        },
+                        "simdev": {
+                            "workloads": [
+                                {
+                                    "params": "-timing -threads %threads%"
+                                }
+                            ]
+                        },
+                        "simlarge": {
+                            "workloads": [
+                                {
+                                    "params": "-timing -threads %threads%"
+                                }
+                            ]
+                        },
+                        "simmedium": {
+                            "workloads": [
+                                {
+                                    "params": "-timing -threads %threads%"
+                                }
+                            ]
+                        },
+                        "simsmall": {
+                            "workloads": [
+                                {
+                                    "params": "-timing -threads %threads%"
+                                }
+                            ]
+                        },
+                        "test": {
+                            "workloads": [
+                                {
+                                    "params": "-h"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "fluidanimate": {
+                    "exec": "fluidanimate.%arch%",
+                    "inputs": {
+                        "native": {
+                            "workloads": [
+                                {
+                                    "params": "%threads% 500 in_500K.fluid out.fluid"
+                                }
+                            ]
+                        },
+                        "simdev": {
+                            "workloads": [
+                                {
+                                    "params": "%threads% 3 in_15K.fluid out.fluid"
+                                }
+                            ]
+                        },
+                        "simlarge": {
+                            "workloads": [
+                                {
+                                    "params": "%threads% 5 in_300K.fluid out.fluid"
+                                }
+                            ]
+                        },
+                        "simmedium": {
+                            "workloads": [
+                                {
+                                    "params": "%threads% 5 in_100K.fluid out.fluid"
+                                }
+                            ]
+                        },
+                        "simsmall": {
+                            "workloads": [
+                                {
+                                    "params": "%threads% 5 in_35K.fluid out.fluid"
+                                }
+                            ]
+                        },
+                        "test": {
+                            "workloads": [
+                                {
+                                    "params": "%threads% 1 in_5K.fluid out.fluid"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "freqmine": {
+                    "exec": "freqmine.%arch%",
+                    "environment": {
+                        "OMP_NUM_THREADS": "%threads%"
+                    },
+                    "inputs": {
+                        "native": {
+                            "workloads": [
+                                {
+                                    "params": "webdocs_250k.dat 11000"
+                                }
+                            ]
+                        },
+                        "simdev": {
+                            "workloads": [
+                                {
+                                    "params": "T10I4D100K_1k.dat 3"
+                                }
+                            ]
+                        },
+                        "simlarge": {
+                            "workloads": [
+                                {
+                                    "params": "kosarak_990k.dat 790"
+                                }
+                            ]
+                        },
+                        "simmedium": {
+                            "workloads": [
+                                {
+                                    "params": "kosarak_500k.dat 410"
+                                }
+                            ]
+                        },
+                        "simsmall": {
+                            "workloads": [
+                                {
+                                    "params": "kosarak_250k.dat 220"
+                                }
+                            ]
+                        },
+                        "test": {
+                            "workloads": [
+                                {
+                                    "params": "T10I4D100K_3.dat 1"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "swaptions": {
+                    "exec": "swaptions.%arch%",
+                    "inputs": {
+                        "native": {
+                            "workloads": [
+                                {
+                                    "params": "-ns 128 -sm 1000000 -nt %threads%"
+                                }
+                            ]
+                        },
+                        "simdev": {
+                            "workloads": [
+                                {
+                                    "params": "-ns 3 -sm 50 -nt %threads%"
+                                }
+                            ]
+                        },
+                        "simlarge": {
+                            "workloads": [
+                                {
+                                    "params": "-ns 64 -sm 40000 -nt %threads%"
+                                }
+                            ]
+                        },
+                        "simmedium": {
+                            "workloads": [
+                                {
+                                    "params": "-ns 32 -sm 20000 -nt %threads%"
+                                }
+                            ]
+                        },
+                        "simsmall": {
+                            "workloads": [
+                                {
+                                    "params": "-ns 16 -sm 10000 -nt %threads%"
+                                }
+                            ]
+                        },
+                        "test": {
+                            "workloads": [
+                                {
+                                    "params": "-ns 1 -sm 5 -nt %threads%"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "x264": {
+                    "exec": "x264.%arch%",
+                    "inputs": {
+                        "native": {
+                            "workloads": [
+                                {
+                                    "params": "--quiet --qp 20 --partitions b8x8,i4x4 --ref 5 --direct auto --weightb --mixed-refs --no-fast-pskip --me umh --subme 7 --analyse b8x8,i4x4 --threads %threads% -o eledream.264 eledream_1920x1080_512.y4m"
+                                }
+                            ]
+                        },
+                        "simdev": {
+                            "workloads": [
+                                {
+                                    "params": "--quiet --qp 20 --partitions b8x8,i4x4 --ref 5 --direct auto --weightb --mixed-refs --no-fast-pskip --me umh --subme 7 --analyse b8x8,i4x4 --threads %threads% -o eledream.264 eledream_64x36_3.y4m"
+                                }
+                            ]
+                        },
+                        "simlarge": {
+                            "workloads": [
+                                {
+                                    "params": "--quiet --qp 20 --partitions b8x8,i4x4 --ref 5 --direct auto --weightb --mixed-refs --no-fast-pskip --me umh --subme 7 --analyse b8x8,i4x4 --threads %threads% -o eledream.264 eledream_640x360_128.y4m"
+                                }
+                            ]
+                        },
+                        "simmedium": {
+                            "workloads": [
+                                {
+                                    "params": "--quiet --qp 20 --partitions b8x8,i4x4 --ref 5 --direct auto --weightb --mixed-refs --no-fast-pskip --me umh --subme 7 --analyse b8x8,i4x4 --threads %threads% -o eledream.264 eledream_640x360_32.y4m"
+                                }
+                            ]
+                        },
+                        "simsmall": {
+                            "workloads": [
+                                {
+                                    "params": "--quiet --qp 20 --partitions b8x8,i4x4 --ref 5 --direct auto --weightb --mixed-refs --no-fast-pskip --me umh --subme 7 --analyse b8x8,i4x4 --threads %threads% -o eledream.264 eledream_640x360_8.y4m"
+                                }
+                            ]
+                        },
+                        "test": {
+                            "workloads": [
+                                {
+                                    "params": "--quiet --qp 20 --partitions b8x8,i4x4 --ref 5 --direct auto --weightb --mixed-refs --no-fast-pskip --me umh --subme 7 --analyse b8x8,i4x4 --threads %threads% -o eledream.264 eledream_32x18_1.y4m"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "canneal": {
+					"disabled": true,
+                    "exec": "canneal.%arch%",
+                    "inputs": {
+                        "native": {
+                            "workloads": [
+                                {
+                                    "params": "%threads% 15000 2000 2500000.nets 6000"
+                                }
+                            ]
+                        },
+                        "simdev": {
+                            "workloads": [
+                                {
+                                    "params": "%threads% 100 300 100.nets 2"
+                                }
+                            ]
+                        },
+                        "simlarge": {
+                            "workloads": [
+                                {
+                                    "params": "%threads% 15000 2000 400000.nets 128"
+                                }
+                            ]
+                        },
+                        "simmedium": {
+                            "workloads": [
+                                {
+                                    "params": "%threads% 15000 2000 200000.nets 64"
+                                }
+                            ]
+                        },
+                        "simsmall": {
+                            "workloads": [
+                                {
+                                    "params": "%threads% 10000 2000 100000.nets 32"
+                                }
+                            ]
+                        },
+                        "test": {
+                            "workloads": [
+                                {
+                                    "params": "%threads% 5 100 10.nets 1"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "streamcluster": {
+                    "exec": "streamcluster.%arch%",
+                    "inputs": {
+                        "native": {
+                            "workloads": [
+                                {
+                                    "params": "10 20 128 1000000 200000 5000 none output.txt %threads%"
+                                }
+                            ]
+                        },
+                        "simdev": {
+                            "workloads": [
+                                {
+                                    "params": "3 10 3 16 16 10 none output.txt %threads%"
+                                }
+                            ]
+                        },
+                        "simlarge": {
+                            "workloads": [
+                                {
+                                    "params": "10 20 128 16384 16384 1000 none output.txt %threads%"
+                                }
+                            ]
+                        },
+                        "simmedium": {
+                            "workloads": [
+                                {
+                                    "params": "10 20 64 8192 8192 1000 none output.txt %threads%"
+                                }
+                            ]
+                        },
+                        "simsmall": {
+                            "workloads": [
+                                {
+                                    "params": "10 20 32 4096 4096 1000 none output.txt %threads%"
+                                }
+                            ]
+                        },
+                        "test": {
+                            "workloads": [
+                                {
+                                    "params": "2 5 1 10 10 5 none output.txt %threads%"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "suites": {
+        "parsec": {
+            "desc": "PARSEC 3.0 Suite",
+            "benchmarks": [
+                "blackscholes",
+                "bodytrack",
+                "facesim",
+                "fluidanimate",
+                "freqmine",
+                "swaptions",
+                "x264",
+                "canneal",
+                "streamcluster"
+            ]
+        }
+    }
+}

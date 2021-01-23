@@ -1,6 +1,7 @@
 [submodule "riscv-linux"]
 	path = boards/default/linux
-	url = https://github.com/firesim/linux.git
+	url = https://github.com/EECS-NTNU/linux
+	branch = firesim-v57
 [submodule "riscv-pk"]
 	path = boards/default/firmware/riscv-pk
 	url = https://github.com/riscv/riscv-pk.git
@@ -19,3 +20,12 @@
 [submodule "boards/firechip/drivers/iceblk-driver"]
 	path = boards/firechip/drivers/iceblk-driver
 	url = https://github.com/firesim/iceblk-driver.git
+[submodule "wlutil/br_ntnu/buildroot"]
+	path = wlutil/br_ntnu/buildroot
+	url = https://github.com/buildroot/buildroot.git
+[submodule "boards/firechip/base-workloads/ntnu-base/pperf"]
+	path = boards/firechip/base-workloads/ntnu-base/pperf
+	url = https://github.com/EECS-NTNU/pperf.git
+[submodule "boards/firechip/base-workloads/ntnu-base/pythonTools"]
+	path = boards/firechip/base-workloads/ntnu-base/pythonTools
+	url = https://github.com/bgottschall/pythonTools.git

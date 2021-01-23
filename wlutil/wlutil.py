@@ -528,7 +528,18 @@ if sp.run(['/usr/bin/sudo', '-ln', 'true'], stdout=sp.DEVNULL).returncode == 0:
         try:
             yield mntPath
         finally:
-            run(sudoCmd + ['umount', mntPath])
+            retries = 0
+            while retries < 5:
+                try:
+                    run(sudoCmd + ['umount', mntPath])
+                except Exception:
+                    print('umount failed... retrying...')
+                    time.sleep(2)
+                    retries += 1
+                    continue
+                break
+            if retries >= 5:
+                raise Exception(f'Could not umount {mntPath}')
 else:
     # User doesn't have sudo (use guestmount, slow but reliable)
     sudoCmd = []
@@ -565,11 +576,15 @@ def resizeFS(img, newSize=0):
       size + rootfs-margin
     """
     log = logging.getLogger()
-    chkfsCmd = ['e2fsck', '-f', '-p', str(img)]
+    # Better try to fix everyithing that is found. Works with broken symbolic
+    # links which are not properly cleaned up through ext2/ext4 during mount/unmount
+    chkfsCmd = ['e2fsck', '-p', '-f',  str(img)]
     ret = run(chkfsCmd, check=False).returncode
     if ret >= 4:
-        # e2fsck has non-error error codes (1,2 indicate corrected errors)
-        raise sp.CalledProcessError(ret, " ".join(chkfsCmd))
+        chkfsCmd = ['e2fsck', '-y', str(img)]
+        ret = run(chkfsCmd, check=False).returncode
+        if ret >= 4:
+            raise sp.CalledProcessError(ret, " ".join(chkfsCmd))
 
     if newSize == 0:
         run(['resize2fs', '-M', img])
@@ -645,7 +660,7 @@ def getToolVersions():
         # Toolchain major version
         toolVerStr = sp.run(["riscv64-unknown-linux-gnu-gcc", "--version"],
                 universal_newlines=True, stdout=sp.PIPE).stdout
-        toolVer = toolVerStr[36]
+        toolVer = toolVerStr.split(' ')[2].split('.')[0]
 
         _toolVersions = {'linuxMaj' : linuxMaj,
                 'linuxMin' : linuxMin,
