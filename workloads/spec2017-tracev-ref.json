@@ -2,7 +2,6 @@
     "name": "spec2017-tracev-ref",
     "base": "spec2017.json",
     "workdir": "common",
-    "overlay": "empty",
     "guest-init": "prepareGuest.sh /opt/spec2017 --suite spec2017 --precmd firesim-start-trigger --postcmd firesim-end-trigger --input ref",
     "rootfs-size": "0",
 	"outputs": [  "/opt/spec2017/output" ],

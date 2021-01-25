@@ -2,7 +2,6 @@
     "name": "parsec-tracev-test",
     "base": "parsec.json",
     "workdir": "common",
-    "overlay": "empty",
     "guest-init": "prepareGuest.sh /opt/parsec --suite parsec --precmd firesim-start-trigger --postcmd firesim-end-trigger --input test",
     "rootfs-size": "0",
 	"outputs": [  "/opt/parsec/output" ],

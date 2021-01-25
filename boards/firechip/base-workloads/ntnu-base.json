@@ -1,8 +1,25 @@
 {
   "name" : "ntnu-base",
-  "base" : "br_ntnu",
+  "distro" : {
+      "name" : "br",
+      "opts" : {
+          "configs" : ["buildroot-config"]
+      }
+  },
   "overlay" : "overlay",
-  "linux-config" : "linux-config",
+  "linux" : {
+      "source" : "../../linux",
+      "config" : "linux-config",
+      "modules" : {
+          "icenet" : "../../drivers/icenet-driver",
+          "iceblk" : "../../drivers/iceblk-driver"
+      }
+  },
+  "firmware" : {
+      "use-bbl" : false,
+      "bbl-src" : "../../firmware/riscv-pk",
+      "opensbi-src" : "../../firmware/opensbi"
+  },
   "post-bin" : "host-post.sh",
   "host-init" : "host-init.sh",
   "files" : [

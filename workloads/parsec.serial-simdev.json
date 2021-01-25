@@ -2,7 +2,6 @@
     "name": "parsec.serial-simdev",
     "base": "parsec.json",
     "workdir": "common",
-    "overlay": "empty",
     "guest-init": "prepareGuest.sh /opt/parsec --suite parsec -v threads=1 -v arch=serial.riscv-64 --input simdev",
     "rootfs-size": "0",
 	"outputs": [  "/opt/parsec/output" ],

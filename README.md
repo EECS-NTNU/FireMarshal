@@ -4,6 +4,7 @@ NTNU - FireMarshal
 This is a fork from FireMarshal containing image specifications that we require to execute our workloads in FireSim. It contains also some fixes and additions of the wlutil scripts that were found to be useful (better filesystem repair, umount retries...). To get started you need to understand the structure and requirements to build linux images.
 
 # Requirements
+* >= QEMU emulator version 5.2.50 (v5.2.0-1340-ge81eb5e6d1)
 * >= gcc-10
 * >= 10.1 riscv64-unknown-linux-gnu toolchain
 

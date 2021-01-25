@@ -2,7 +2,6 @@
     "name": "parsec-simlarge",
     "base": "parsec.json",
     "workdir": "common",
-    "overlay": "empty",
     "guest-init": "prepareGuest.sh /opt/parsec --suite parsec --input simlarge",
     "rootfs-size": "0",
 	"outputs": [  "/opt/parsec/output" ],
