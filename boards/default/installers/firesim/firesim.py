@@ -40,7 +40,7 @@ def install(targetCfg, opts):
     # Firesim config
     fsCfg = {
             "benchmark_name" : targetCfg['name'],
-            "common_simulation_outputs" : ["uartlog"]
+            "common_simulation_outputs" : ["uartlog", "runtime.conf", "blkdev-log", "niclog", "TRACEFILE*", "AUTOCOUNTERFILE*", "*.csv"]
             }
 
     if 'post_run_hook' in targetCfg:

@@ -5,8 +5,17 @@ This is a fork from FireMarshal containing image specifications that we require 
 
 # Requirements
 * >= QEMU emulator version 5.2.50 (v5.2.0-1340-ge81eb5e6d1)
-* >= gcc-10
-* >= 10.1 riscv64-unknown-linux-gnu toolchain
+* >= gcc-9/gcc-10
+* >= 9.2/10.1 riscv64-unknown-linux-gnu toolchain
+
+By default the build process will require a gcc-10 toolchain for host and riscv64. Switch the `buildroot-config` under `boards/firechip/base-workloads/ntnu-base/` to the desired configuration for gcc-9 or gcc-10:
+```
+rm buildroot-config
+# GCC-9
+ln -s buildroot-config-gcc-9 buildroot-config
+# GCC-10 (default)
+ln -s buildroot-config-gcc-10 buildroot-config
+```
 
 Ubuntu Requirements to build kernel:  
 ```sudo apt lzop libncurses-dev flex bison openssl libssl-dev dkms libelf-dev libudev-dev libpci-dev libiberty-dev autoconf```
