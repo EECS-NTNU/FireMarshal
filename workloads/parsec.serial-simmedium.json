@@ -17,6 +17,11 @@
             "command": "/opt/parsec/run.sh"
         },
         {
+            "name": "canneal",
+            "guest-init": "prepareGuest.sh /opt/parsec --wrapper time -v threads=1 -v arch=serial.riscv-64 --input simmedium -- canneal",
+            "command": "/opt/parsec/run.sh"
+        },
+        {
             "name": "fluidanimate",
             "guest-init": "prepareGuest.sh /opt/parsec --wrapper time -v threads=1 -v arch=serial.riscv-64 --input simmedium -- fluidanimate",
             "command": "/opt/parsec/run.sh"

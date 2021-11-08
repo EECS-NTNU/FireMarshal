@@ -17,6 +17,11 @@
             "command": "/opt/parsec/run.sh"
         },
         {
+            "name": "canneal",
+            "guest-init": "prepareGuest.sh /opt/parsec --wrapper time --wrapper pmapelf --input simlarge -- canneal",
+            "command": "/opt/parsec/run.sh"
+        },
+        {
             "name": "fluidanimate",
             "guest-init": "prepareGuest.sh /opt/parsec --wrapper time --wrapper pmapelf --input simlarge -- fluidanimate",
             "command": "/opt/parsec/run.sh"
