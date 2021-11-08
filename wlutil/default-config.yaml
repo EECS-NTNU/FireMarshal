@@ -29,7 +29,7 @@ firesim-dir : null
 jlevel : '12'
 
 # Number of extra bytes to leave free by default in filesystem images
-rootfs-margin : '256MiB'
+rootfs-margin : '768MiB'
 
 # Options to pass to the doit library (for the 'run' command). Documentation is
 # sparse, but you can run 'doit help run' for a few options.
