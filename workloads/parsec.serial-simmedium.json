@@ -4,7 +4,7 @@
     "workdir": "common",
     "guest-init": "prepareGuest.sh /opt/parsec --suite parsec -v threads=1 -v arch=serial.riscv-64 --input simmedium",
     "rootfs-size": "0",
-	"outputs": [  "/opt/parsec/output" ],
+    "outputs": [  "/opt/parsec/output" ],
     "jobs": [
         {
             "name": "blackscholes",

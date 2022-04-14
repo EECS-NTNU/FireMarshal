@@ -4,7 +4,7 @@
     "workdir": "common",
     "guest-init": "prepareGuest.sh /opt/spec2017 --suite spec2017 --input ref",
     "rootfs-size": "0",
-	"outputs": [  "/opt/spec2017/output" ],
+    "outputs": [  "/opt/spec2017/output" ],
     "jobs": [
         {
             "name": "500.perlbench_r",

@@ -4,7 +4,7 @@
     "workdir": "common",
     "guest-init": "prepareGuest.sh /opt/parsec --suite parsec --input native",
     "rootfs-size": "0",
-	"outputs": [  "/opt/parsec/output" ],
+    "outputs": [  "/opt/parsec/output" ],
     "jobs": [
         {
             "name": "blackscholes",
@@ -14,6 +14,11 @@
         {
             "name": "bodytrack",
             "guest-init": "prepareGuest.sh /opt/parsec --wrapper time --wrapper pmapelf --input native -- bodytrack",
+            "command": "/opt/parsec/run.sh"
+        },
+        {
+            "name": "canneal",
+            "guest-init": "prepareGuest.sh /opt/parsec --wrapper time --wrapper pmapelf --input native -- canneal",
             "command": "/opt/parsec/run.sh"
         },
         {

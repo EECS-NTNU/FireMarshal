@@ -4,7 +4,7 @@
     "workdir": "common",
     "guest-init": "prepareGuest.sh /opt/parsec --suite parsec --input simsmall",
     "rootfs-size": "0",
-	"outputs": [  "/opt/parsec/output" ],
+    "outputs": [  "/opt/parsec/output" ],
     "jobs": [
         {
             "name": "blackscholes",
