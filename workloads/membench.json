@@ -2,7 +2,7 @@
   "name" : "membench",
   "base" : "ntnu-base.json",
   "overlay" : "overlay",
-  "init-host" : "init-host.sh",
+  "host-init" : "host-init.sh",
   "jobs" : [
     {
       "name" : "bwtest",
