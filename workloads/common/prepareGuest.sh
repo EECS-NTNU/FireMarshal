@@ -37,7 +37,8 @@ chmod +x "${prepareDir}"/run.sh
 # Get every path that is in the runscript and copy it to a new location
 # This way we only keep the data in the image that is required for this run
 for p in $(grep -E '^  cd ".*"$' "${prepareDir}"/run.sh | sed 's/^  cd "//g' | sed 's/"$//g' | sort -n | uniq); do
-	np=${p/$target/_prepare}
+	np="${prepareDir}/${p}"
+	p="${targetDir}/${p}"	
 	echo "Copy benchmark $(basename "$(dirname "$p")")/$(basename "$p") into image..."
 	# Copy using dereferencing to resolve symbolic links and hardlink only to solve the space problem
 	mkdir -p "$(dirname "${np}")" && cp -lRL "$p" "$np"
