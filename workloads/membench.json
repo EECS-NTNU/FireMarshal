@@ -1,0 +1,20 @@
+{
+  "name" : "membench",
+  "base" : "ntnu-base.json",
+  "overlay" : "overlay",
+  "host-init" : "host-init.sh",
+  "jobs" : [
+    {
+      "name" : "bwtest",
+      "run" : "bwtest.sh"
+    },
+    {
+      "name" : "pointers",
+      "run" : "pointers.sh"
+    },
+    {
+      "name" : "pointers-hugetlb",
+      "run" : "pointers-hugetlb.sh"
+    }
+  ]
+}
