@@ -5,13 +5,11 @@
   "jobs" : [
     {
       "name" : "pointers",
-      "bin" : "pointers/bare-pointers",
-	  "img" : "dummy.img"
+      "bin" : "pointers/bare-pointers"
     },
     {
       "name" : "bwtest",
-      "bin" : "bwtest/pointless-bwtest",
-	  "img" : "dummy.img"
+      "bin" : "bwtest/bare-bwtest"
     }
   ]
 }
