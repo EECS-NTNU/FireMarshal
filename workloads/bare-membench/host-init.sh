@@ -1,7 +1,7 @@
 #!/bin/bash
 
 make -C bwtest clean
-make -C bwtest pointless-bwtest
+make -C bwtest bare-bwtest
 
 make -C pointers clean
-make -C pointers pointless-pointers
+make -C pointers bare-pointers

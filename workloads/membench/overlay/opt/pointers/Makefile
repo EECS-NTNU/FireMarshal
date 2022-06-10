@@ -1,30 +1,36 @@
-CC=gcc
-CROSS_COMPILE=riscv64-unknown-elf-
-CFLAGS=-DBAREMETAL -mcmodel=medany -Wall -O1 -g -fno-common -fno-builtin-printf
-LDFLAGS=-static -nostdlib -nostartfiles -lgcc -g
+CC := gcc
+CROSS_COMPILE := riscv64-unknown-elf-
 
-SRC = $(filter-out firesim_%,$(wildcard *.c))
-OBJ = $(patsubst %.c,%.o,$(SRC))
+BARE_CFLAGS=-DBAREMETAL -mcmodel=medany -Wall -O1 -g -fno-common -fno-builtin-printf
+BARE_LDFLAGS=-static -nostdlib -nostartfiles -lgcc -g
+
+CFLAGS=-O2 -g -DUSE_HEAP
+LDFLAGS=-static -T linux_reloc.ld
 
 .PHONY: all clean
 
-all: pointless-pointers pointers
+all: bare-pointers pointers
 
-pointers: pointless-pointers.c
-	riscv64-unknown-linux-gnu-$(CC) -O2 -g $< -o $@
 
-pointless-pointers : pointless-pointers.o firesim_crt.o firesim_syscalls.o
-	$(CROSS_COMPILE)$(CC) -T firesim_link.ld $(LDFLAGS) $^ -o $@
+pointers: pointers.o
+	$(CROSS_COMPILE)$(CC) $(LDFLAGS) $^ -o $@
+
+pointers.o: %.o : %.c
+	$(CROSS_COMPILE)$(CC) $(CFLAGS) -c $^ -o $@
+
+bare-pointers : % : %.o firesim_crt.o firesim_syscalls.o
+	$(CROSS_COMPILE)$(CC) -T firesim_link.ld $(BARE_LDFLAGS) $^ -o $@
 
 firesim_syscalls.o: %.o : %.c firesim_util.h firesim_encoding.h
-	$(CROSS_COMPILE)$(CC) $(CFLAGS) -c $< -o $@
+	$(CROSS_COMPILE)$(CC) $(BARE_CFLAGS) -c $< -o $@
 
-%.o: %.S
-	$(CROSS_COMPILE)$(CC) $(CFLAGS) -c $< -o $@
+firesim_crt.o: %.o : %.S
+	$(CROSS_COMPILE)$(CC) $(BARE_CFLAGS) -c $< -o $@
 
-%.o: %.c
-	$(CROSS_COMPILE)$(CC) $(CFLAGS) -c $< -o $@
+bare-pointers.o: pointers.c
+	$(CROSS_COMPILE)$(CC) $(BARE_CFLAGS) -c $< -o $@
+
 
 clean:
 	rm -f *.o
-	rm -f pointless-pointers pointers
+	rm -f bare-pointers pointers

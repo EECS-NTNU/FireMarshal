@@ -11,6 +11,10 @@
     {
       "name" : "pointers",
       "run" : "pointers.sh"
+    },
+  	{
+      "name" : "pointers-hugetlb",
+      "run" : "pointers-hugetlb.sh"
     }
-  ]
+]
 }

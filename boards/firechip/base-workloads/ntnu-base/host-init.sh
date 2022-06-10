@@ -9,4 +9,4 @@ make -C trigger
 make -C pmapelf
 
 # pperf
-make -C pperf clean pperf
+make -C pperf pperf
