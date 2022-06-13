@@ -31,7 +31,7 @@
 
 // Start with that many bytes, and end at STACK_SIZE
 #define STREAM_PARTITION_START ((uint64_t) 64ULL)
-#define STREAM_SIZE ((uint64_t) GiB(4))
+#define STREAM_SIZE ((uint64_t) GiB(1))
 
 
 

@@ -30,7 +30,7 @@
 #endif
 
 #ifndef CHASE_SIZE
-#define CHASE_SIZE ((uint64_t) GiB(2))
+#define CHASE_SIZE ((uint64_t) MiB(512))
 #endif
 
 #ifdef BAREMETAL
