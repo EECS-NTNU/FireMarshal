@@ -18,7 +18,7 @@ bwtest bwstride: % : %.o
 
 bwstride.o: CFLAGS += -DSTRIDED -DSTRIDE_OFFSET=$(STRIDE_OFFSET)
 bwtest.o bwstride.o: bwtest.c
-	$(CROSS_COMPILE)$(CC) $(CFLAGS) -c $^ -o $@
+	$(CROSS_COMPILE)$(CC) $(CFLAGS) $(DEFINES) -c $^ -o $@
 
 bare-bwtest bare-bwstride: % : %.o firesim_crt.o firesim_syscalls.o
 	$(CROSS_COMPILE)$(CC) -T firesim_link.ld $(BARE_LDFLAGS) $^ -o $@
@@ -31,7 +31,7 @@ firesim_crt.o: %.o : %.S
 
 bare-bwstride.o: BARE_CFLAGS += -DSTRIDED -DSTRIDE_OFFSET=$(STRIDE_OFFSET)
 bare-bwtest.o bare-bwstride.o: bwtest.c
-	$(CROSS_COMPILE)$(CC) $(BARE_CFLAGS) -c $< -o $@
+	$(CROSS_COMPILE)$(CC) $(BARE_CFLAGS) $(DEFINES) -c $< -o $@
 
 
 clean:	
