@@ -9,6 +9,10 @@
       "run" : "bwtest.sh"
     },
     {
+      "name" : "bwstride",
+      "run" : "bwstride.sh"
+    },
+    {
       "name" : "pointers",
       "run" : "pointers.sh"
     },

@@ -29,11 +29,20 @@
 #define STACK_SIZE (MiB(64))
 #define STREAM_TYPE uint64_t
 
-// Start with that many bytes, and end at STACK_SIZE
-#define STREAM_PARTITION_START ((uint64_t) 64ULL)
 #define STREAM_SIZE ((uint64_t) GiB(1))
 
 
+#ifdef STRIDED
+#ifdef STRIDE_OFFSET
+#define STRIDE_ELEMENTS (STRIDE_OFFSET / sizeof(STREAM_TYPE))
+#else
+#define STRIDE_ELEMENTS (64U / sizeof(STREAM_TYPE))
+#endif
+#else
+#define STRIDE_ELEMENTS (1U)
+#endif
+
+#define STREAM_PARTITION_START ((uint64_t) (sizeof(STREAM_TYPE) * 8U * STRIDE_ELEMENTS))
 
 #ifdef BAREMETAL
 #include "firesim_encoding.h"
@@ -54,74 +63,79 @@ static STREAM_TYPE MEMORY_BASE[STACK_SIZE / sizeof(STREAM_TYPE)];
 static STREAM_TYPE *streamA = (STREAM_TYPE *) MEMORY_BASE;
 static STREAM_TYPE *streamB = (STREAM_TYPE *) MEMORY_BASE + (STACK_SIZE / (2 * sizeof(STREAM_TYPE)));
 
-#define loadKernel(memorySize, streamSize) { \
-        uint64_t const copyElements = memorySize / sizeof(STREAM_TYPE); \
-        uint64_t const copyIterations = (streamSize + (memorySize - 1)) / memorySize; \
-        stime = myTime();                                              \
-        for (n = 0; n < copyIterations; n++) {                          \
-            for (stream = 0; stream < copyElements; stream += 8) {      \
-                _use += streamA[stream + 0] +                            \
-                    streamA[stream + 1] +                               \
-                    streamA[stream + 2] +                               \
-                    streamA[stream + 3] +                               \
-                    streamA[stream + 4] +                               \
-                    streamA[stream + 5] +                               \
-                    streamA[stream + 6] +                               \
-                    streamA[stream + 7];                                \
-            }                                                           \
-        }                                                               \
-        etime = myTime();                                              \
+
+#define getCopyElements(memorySize, kernelLoad) ((memorySize) / (sizeof(STREAM_TYPE) * STRIDE_ELEMENTS))
+#define getCopyIterations(memorySize, streamSize) (((streamSize) + (((memorySize) / STRIDE_ELEMENTS) - 1)) / ((memorySize) / STRIDE_ELEMENTS))
+
+
+#define loadKernel(memorySize, streamSize) {                                           \
+        uint64_t const copyElements = getCopyElements(memorySize, 1);                  \
+        uint64_t const copyIterations = getCopyIterations(memorySize, streamSize);     \
+        stime = myTime();                                                              \
+        for (n = 0; n < copyIterations; n++) {                                         \
+            for (stream = 0; stream < copyElements; stream += (8 * STRIDE_ELEMENTS)) { \
+                _use += streamA[stream + (0 * STRIDE_ELEMENTS)] +                      \
+                    streamA[stream + (1 * STRIDE_ELEMENTS)] +                          \
+                    streamA[stream + (2 * STRIDE_ELEMENTS)] +                          \
+                    streamA[stream + (3 * STRIDE_ELEMENTS)] +                          \
+                    streamA[stream + (4 * STRIDE_ELEMENTS)] +                          \
+                    streamA[stream + (5 * STRIDE_ELEMENTS)] +                          \
+                    streamA[stream + (6 * STRIDE_ELEMENTS)] +                          \
+                    streamA[stream + (7 * STRIDE_ELEMENTS)];                           \
+            }                                                                          \
+        }                                                                              \
+        etime = myTime();                                                              \
     }
 
-#define storeKernel(memorySize, streamSize) { \
-        uint64_t const copyElements = memorySize / sizeof(STREAM_TYPE); \
-        uint64_t const copyIterations = (streamSize + (memorySize - 1)) / memorySize; \
-        stime = myTime();                                              \
-        for (n = 0; n < copyIterations; n++) {                          \
-            for (stream = 0; stream < copyElements; stream += 8) {      \
-                streamA[stream + 0] = 1;                                \
-                streamA[stream + 1] = 1;                                \
-                streamA[stream + 2] = 1;                                \
-                streamA[stream + 3] = 1;                                \
-                streamA[stream + 4] = 1;                                \
-                streamA[stream + 5] = 1;                                \
-                streamA[stream + 6] = 1;                                \
-                streamA[stream + 7] = 1;                                \
-            }                                                           \
-        }                                                               \
-        etime = myTime();                                              \
+#define storeKernel(memorySize, streamSize) {                                          \
+        uint64_t const copyElements = getCopyElements(memorySize, 1);                  \
+        uint64_t const copyIterations = getCopyIterations(memorySize, streamSize);     \
+        stime = myTime();                                                              \
+        for (n = 0; n < copyIterations; n++) {                                         \
+            for (stream = 0; stream < copyElements; stream += (8 * STRIDE_ELEMENTS)) { \
+                streamA[stream + (0 * STRIDE_ELEMENTS)] = 1;                           \
+                streamA[stream + (1 * STRIDE_ELEMENTS)] = 1;                           \
+                streamA[stream + (2 * STRIDE_ELEMENTS)] = 1;                           \
+                streamA[stream + (3 * STRIDE_ELEMENTS)] = 1;                           \
+                streamA[stream + (4 * STRIDE_ELEMENTS)] = 1;                           \
+                streamA[stream + (5 * STRIDE_ELEMENTS)] = 1;                           \
+                streamA[stream + (6 * STRIDE_ELEMENTS)] = 1;                           \
+                streamA[stream + (7 * STRIDE_ELEMENTS)] = 1;                           \
+            }                                                                          \
+        }                                                                              \
+        etime = myTime();                                                              \
     }
 
 
 
-#define loadStoreKernel(memorySize, streamSize) { \
-        uint64_t const copyElements = memorySize / (2 * sizeof(STREAM_TYPE)); \
-        uint64_t const copyIterations = (streamSize + (memorySize - 1)) / memorySize; \
-        stime = myTime();                                              \
-        for (n = 0; n < copyIterations; n++) {                          \
-            for (stream = 0; stream < copyElements; stream += 8) {      \
-                streamA[stream + 0] = streamB[stream + 0];              \
-                streamA[stream + 1] = streamB[stream + 1];              \
-                streamA[stream + 2] = streamB[stream + 2];              \
-                streamA[stream + 3] = streamB[stream + 3];              \
-                streamA[stream + 4] = streamB[stream + 4];              \
-                streamA[stream + 5] = streamB[stream + 5];              \
-                streamA[stream + 6] = streamB[stream + 6];              \
-                streamA[stream + 7] = streamB[stream + 7];              \
-            }                                                           \
-        }                                                               \
-        etime = myTime();                                              \
+#define loadStoreKernel(memorySize, streamSize) {                                                  \
+        uint64_t const copyElements = getCopyElements(memorySize, 2);                              \
+        uint64_t const copyIterations = getCopyIterations(memorySize, streamSize);                 \
+        stime = myTime();                                                                          \
+        for (n = 0; n < copyIterations; n++) {                                                     \
+            for (stream = 0; stream < copyElements; stream += (8 * STRIDE_ELEMENTS)) {             \
+                streamA[stream + (0 * STRIDE_ELEMENTS)] = streamB[stream + (0 * STRIDE_ELEMENTS)]; \
+                streamA[stream + (1 * STRIDE_ELEMENTS)] = streamB[stream + (1 * STRIDE_ELEMENTS)]; \
+                streamA[stream + (2 * STRIDE_ELEMENTS)] = streamB[stream + (2 * STRIDE_ELEMENTS)]; \
+                streamA[stream + (3 * STRIDE_ELEMENTS)] = streamB[stream + (3 * STRIDE_ELEMENTS)]; \
+                streamA[stream + (4 * STRIDE_ELEMENTS)] = streamB[stream + (4 * STRIDE_ELEMENTS)]; \
+                streamA[stream + (5 * STRIDE_ELEMENTS)] = streamB[stream + (5 * STRIDE_ELEMENTS)]; \
+                streamA[stream + (6 * STRIDE_ELEMENTS)] = streamB[stream + (6 * STRIDE_ELEMENTS)]; \
+                streamA[stream + (7 * STRIDE_ELEMENTS)] = streamB[stream + (7 * STRIDE_ELEMENTS)]; \
+            }                                                                                      \
+        }                                                                                          \
+        etime = myTime();                                                                          \
     }
 
 #define loadWarmup(memorySize) { \
-        uint64_t const copyElements = memorySize / sizeof(STREAM_TYPE);   \
+        uint64_t const copyElements = memorySize / sizeof(STREAM_TYPE); \
         for (stream = 0; stream < copyElements; stream++) {             \
             _use += streamA[stream];                                    \
         }                                                               \
     }
 
 #define storeWarmup(memorySize) { \
-        uint64_t const copyElements = memorySize / sizeof(STREAM_TYPE);   \
+        uint64_t const copyElements = memorySize / sizeof(STREAM_TYPE); \
         for (stream = 0; stream < copyElements; stream++) {             \
             streamA[stream] = 1;                                        \
         }                                                               \
@@ -143,6 +157,12 @@ int main() {
     printf("partition;size;load;store;load_store\n");
 
     while (memorySize <= STACK_SIZE) {
+
+#ifdef DEBUG
+    printf("[DEBUG][%lu B] copyElements   %lu\n", memorySize, getCopyElements(memorySize, 1));
+    printf("[DEBUG][%lu B] copyIterations %lu\n", memorySize, getCopyIterations(memorySize, STREAM_SIZE));
+#endif
+
         printf("%lu;%lu", memorySize, STREAM_SIZE);
         loadWarmup(memorySize);
         loadKernel(memorySize, STREAM_SIZE);

@@ -4,12 +4,16 @@
   "host-init" : "host-init.sh",
   "jobs" : [
     {
-      "name" : "pointers",
-      "bin" : "pointers/bare-pointers"
-    },
-    {
       "name" : "bwtest",
       "bin" : "bwtest/bare-bwtest"
+    },
+    {
+      "name" : "bwstride",
+      "bin" : "bwtest/bare-bwstride"
+    },
+    {
+      "name" : "pointers",
+      "bin" : "pointers/bare-pointers"
     }
   ]
 }
