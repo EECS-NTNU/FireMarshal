@@ -26,11 +26,11 @@
 #define GiB(x) (1024ULL * MiB(x))
 
 #ifndef MEMORY_SIZE
-#define MEMORY_SIZE ((uint64_t) MiB(64))
+#define MEMORY_SIZE ((uint64_t) KiB(512))
 #endif
 
 #ifndef CHASE_SIZE
-#define CHASE_SIZE ((uint64_t) MiB(512))
+#define CHASE_SIZE ((uint64_t) MiB(1))
 #endif
 
 #ifdef BAREMETAL
