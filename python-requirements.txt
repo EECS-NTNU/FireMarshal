@@ -1,5 +1,4 @@
 psutil
-doit
-gitpython
+doit==0.31.0
 humanfriendly
 PyYAML

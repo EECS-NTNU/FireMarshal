@@ -33,7 +33,6 @@ def main():
     # Build command
     build_parser = subparsers.add_parser(
         'build', help='Build an image from the given configuration.')
-    build_parser.add_argument('config_files', nargs='+', help="Configuration file(s) to use.")
     build_parser.add_argument('-B', '--binOnly', action='store_true', help="Only build the binary")
     build_parser.add_argument('-I', '--imgOnly', action='store_true', help="Only build the image (may require an image if you have guest-init scripts)")
 
@@ -47,12 +46,10 @@ def main():
     launch_parser.add_argument('-a', '--all', action='store_true', help="Run all jobs in the workload")
     # the type= option here allows us to only accept one argument but store it
     # in a list so it matches the "build" behavior
-    launch_parser.add_argument('config_files', nargs='+', help="Configuration file to use.")
 
     # Test command
     test_parser = subparsers.add_parser(
             'test', help="Test each workload.")
-    test_parser.add_argument('config_files', nargs='+', help="Configuration file(s) to use.")
     test_parser.add_argument('-s', '--spike', action='store_true',
                              help="Use the spike isa simulator instead of qemu")
     test_parser.add_argument('-m', '--manual', metavar='testDir', help="Manual test, don't build or run, just compare testDir against the reference output.")
@@ -60,13 +57,13 @@ def main():
     # Clean Command
     clean_parser = subparsers.add_parser(
             'clean', help="Removes build outputs of the provided config (img and bin). Does not affect logs or runOutputs.")
-    clean_parser.add_argument('config_files', nargs='+', help="Configuration file(s) to use.")
 
     # Install Command
     install_parser = subparsers.add_parser(
             'install', help="Install this workload to firesim (create configs in firesim/deploy/workloads)")
-    install_parser.add_argument('config_files', nargs='+', help="Configuration file(s) to use.")
     install_parser.add_argument("-t", "--target", default='firesim', type=str, help="Target to install to. See your board's documentation for available targets")
+
+    parser.add_argument('config_files', nargs='+', help="Configuration file(s) to use.")
 
     args = parser.parse_args()
 

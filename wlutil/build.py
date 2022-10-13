@@ -475,13 +475,20 @@ def makeBBL(config, nodisk=False):
 
 def makeOpenSBI(config, nodisk=False):
     payload = config['linux']['source'] / 'arch' / 'riscv' / 'boot' / 'Image'
-    # Align to next MiB
+    
+    # Align to next 2 MiB - for newer linux kernel >=5.10
+    # One could also just skip this and let openSBI put the FDT to its default address i.e. 0x82200000
+    # payloadSize = ((payload.stat().st_size + 0x1fffff) // 0x200000) * 0x200000
+
+    # For now align it to next 1 MiB for linux kernels <5.10
     payloadSize = ((payload.stat().st_size + 0xfffff) // 0x100000) * 0x100000
-    makeArgsOpts = ['PLATFORM=generic',
-                    'FW_PAYLOAD_PATH=' + str(payload),
-                    'FW_PAYLOAD_FDT_ADDR=0x$(shell printf "%X" '
-                    '$$(( $(FW_TEXT_START) + $(FW_PAYLOAD_OFFSET) + ' +
-                    hex(payloadSize) + ' )))']
+    makeArgsOpts = [
+            'PLATFORM=generic',
+            'FW_PAYLOAD_PATH=' + str(payload),
+            'FW_PAYLOAD_FDT_ADDR=0x$(shell printf "%X" $$(( $(FW_TEXT_START) + $(FW_PAYLOAD_OFFSET) + ' + hex(payloadSize) + ' )))',
+            'FW_JUMP=n',
+            'FW_DYNAMIC=n'
+    ]
 
     args = wlutil.getOpt('linux-make-args') + makeArgsOpts
 

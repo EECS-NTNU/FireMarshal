@@ -199,7 +199,7 @@ derivedOpts = [
         ]
 
 
-class marshalCtx(collections.MutableMapping):
+class marshalCtx(collections.abc.MutableMapping):
     """Global FireMarshal context (configuration)."""
 
     # Actual internal storage for all options
