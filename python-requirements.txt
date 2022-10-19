@@ -1,5 +1,0 @@
-psutil
-doit
-gitpython
-humanfriendly
-PyYAML

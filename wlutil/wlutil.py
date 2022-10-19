@@ -19,6 +19,26 @@ import pprint
 import doit
 import importlib.util
 import psutil
+import signal
+
+cleanUpFunctions = []
+
+
+# Register clean-up function for jobs launched by launch.py
+def registerCleanUp(func):
+    cleanUpFunctions.append(func)
+
+
+# Handle SIGINT
+def sigIntHandler(signum, frame):
+    for cleanUpFunc in cleanUpFunctions:
+        cleanUpFunc()
+
+    sys.exit("Received SIGINT")
+
+
+# Register SIGINT signal handler
+signal.signal(signal.SIGINT, sigIntHandler)
 
 # Useful for defining lists of files (e.g. 'files' part of config)
 FileSpec = collections.namedtuple('FileSpec', ['src', 'dst'])
@@ -199,7 +219,7 @@ derivedOpts = [
         ]
 
 
-class marshalCtx(collections.MutableMapping):
+class marshalCtx(collections.abc.MutableMapping):
     """Global FireMarshal context (configuration)."""
 
     # Actual internal storage for all options
@@ -602,15 +622,11 @@ def resizeFS(img, newSize=0):
       size + rootfs-margin
     """
     log = logging.getLogger()
-    # Better try to fix everyithing that is found. Works with broken symbolic
-    # links which are not properly cleaned up through ext2/ext4 during mount/unmount
-    chkfsCmd = ['e2fsck', '-p', '-f',  str(img)]
+    chkfsCmd = ['e2fsck', '-f', '-p', str(img)]
     ret = run(chkfsCmd, check=False).returncode
     if ret >= 4:
-        chkfsCmd = ['e2fsck', '-y', str(img)]
-        ret = run(chkfsCmd, check=False).returncode
-        if ret >= 4:
-            raise sp.CalledProcessError(ret, " ".join(chkfsCmd))
+        # e2fsck has non-error error codes (1,2 indicate corrected errors)
+        raise sp.CalledProcessError(ret, " ".join(chkfsCmd))
 
     if newSize == 0:
         run(['resize2fs', '-M', img])
@@ -684,9 +700,9 @@ def getToolVersions():
         linuxMin = str((int(linuxHeaderVer) >> 8) & 0xFF)
 
         # Toolchain major version
-        toolVerStr = sp.run(["riscv64-unknown-linux-gnu-gcc", "--version"],
+        toolVerStr = sp.run(["riscv64-unknown-linux-gnu-gcc", "-dumpfullversion"],
                             universal_newlines=True, stdout=sp.PIPE).stdout
-        toolVer = toolVerStr.split(' ')[2].split('.')[0]
+        toolVer = toolVerStr.split('.')[0]
 
         _toolVersions = {'linuxMaj': linuxMaj,
                          'linuxMin': linuxMin,
