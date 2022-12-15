@@ -3,5 +3,5 @@
   "base" : "ntnu-base.json",
   "overlay" : "overlay",
   "host-init": "host-init.sh",
-  "rootfs-size" : "10GB"
+  "rootfs-size" : "16GB"
 }

@@ -2,7 +2,7 @@
 
 export PATH="$PATH:/usr/local/bin/"
 
-INVOKE_DEFARGS="--prepare --compile"
+INVOKE_DEFARGS="--prepare --compile --precmd 'firesim-start-trigger' --postcmd 'firesim-end-trigger'"
 
 if [ $# -lt 2 ]; then
 	echo "$0 [target dir] [arguments to invoke.py...]" >&2

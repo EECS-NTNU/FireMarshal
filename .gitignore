@@ -1,4 +1,7 @@
 *.swp
+.conda-env
+env.sh
+env.sh.bkp
 test.log
 wlutil/_command.sh
 *__pycache__
