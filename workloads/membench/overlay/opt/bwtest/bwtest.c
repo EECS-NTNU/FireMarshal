@@ -18,6 +18,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#define DEBUG
+
 #include <stdint.h>
 #include <stdio.h>
 
@@ -26,13 +28,13 @@
 #define GiB(x) (1024ULL * MiB(x))
 
 #ifndef STACK_SIZE
-#define STACK_SIZE (MiB(1))
+#define STACK_SIZE (KiB(128))
 #endif
 
 #define STREAM_TYPE uint64_t
 
 #ifndef STREAM_SIZE
-#define STREAM_SIZE ((uint64_t)MiB(1))
+#define STREAM_SIZE ((uint64_t)KiB(128))
 #endif
 
 // In case one wants to only access e.g. once per cache line
@@ -96,20 +98,19 @@ static STREAM_TYPE *streamB =
     uint64_t const copyElements = getCopyElements(memorySize, 1);              \
     uint64_t const copyIterations = getCopyIterations(memorySize, 1);          \
     stime = myTime();                                                          \
-    int _test = 0;                                                             \
-    for (n = 0; n < copyIterations; n++) {                                     \
-      for (stream = 0; stream < copyElements;                                  \
-           stream += (8 * STRIDE_ELEMENTS)) {                                  \
-        _use += streamA[STRIDE_ELEMENTS * 0];                                  \
-        _use += streamA[STRIDE_ELEMENTS * 1];                                  \
-        _use += streamA[STRIDE_ELEMENTS * 2];                                  \
-        _use += streamA[STRIDE_ELEMENTS * 3];                                  \
-        _use += streamA[STRIDE_ELEMENTS * 4];                                  \
-        _use += streamA[STRIDE_ELEMENTS * 5];                                  \
-        _use += streamA[STRIDE_ELEMENTS * 6];                                  \
-        _use += streamA[STRIDE_ELEMENTS * 7];                                  \
-      }                                                                        \
-    }                                                                          \
+	      for (n = 0; n < copyIterations; n++) {                                     \
+		            for (stream = 0; stream < copyElements;                                  \
+					               stream += (8 * STRIDE_ELEMENTS)) {                                  \
+				            _use += streamA[STRIDE_ELEMENTS * 0];                                  \
+				            _use += streamA[STRIDE_ELEMENTS * 1];                                  \
+				            _use += streamA[STRIDE_ELEMENTS * 2];                                  \
+				            _use += streamA[STRIDE_ELEMENTS * 3];                                  \
+				            _use += streamA[STRIDE_ELEMENTS * 4];                                  \
+				            _use += streamA[STRIDE_ELEMENTS * 5];                                  \
+				            _use += streamA[STRIDE_ELEMENTS * 6];                                  \
+				            _use += streamA[STRIDE_ELEMENTS * 7];                                  \
+				          }                                                                        \
+		          }                                                                          \
     etime = myTime();                                                          \
   }
 
@@ -117,11 +118,12 @@ static STREAM_TYPE *streamB =
   {                                                                            \
     uint64_t const copyElements = getCopyElements(memorySize, 1);              \
     uint64_t const copyIterations = getCopyIterations(memorySize, 1);          \
+	STREAM_TYPE * stream_base = streamA;					\ 
     stime = myTime();                                                          \
-    int _test = 0;                                                             \
     for (n = 0; n < copyIterations; n++) {                                     \
       for (stream = 0; stream < copyElements;                                  \
            stream += (8 * STRIDE_ELEMENTS)) {                                  \
+	stream_base += stream; \ 
         asm volatile("ld %0, %2(%1)\n"                                         \
                      "ld %0, %3(%1)\n"                                         \
                      "ld %0, %4(%1)\n"                                         \
@@ -130,8 +132,8 @@ static STREAM_TYPE *streamB =
                      "ld %0, %7(%1)\n"                                         \
                      "ld %0, %8(%1)\n"                                         \
                      "ld %0, %9(%1)"                                           \
-                     : "=r"(_test)                                             \
-                     : "r"(stream), "i"(STRIDE_OFFSET * 0),                    \
+                     : "=r"(_use)                                             \
+                     : "r"(stream_base), "i"(STRIDE_OFFSET * 0),                    \
                        "i"(STRIDE_OFFSET * 1), "i"(STRIDE_OFFSET * 2),         \
                        "i"(STRIDE_OFFSET * 3), "i"(STRIDE_OFFSET * 4),         \
                        "i"(STRIDE_OFFSET * 5), "i"(STRIDE_OFFSET * 6),         \
@@ -239,6 +241,13 @@ int main() {
     loadWarmup(memorySize);
     loadKernelNoAdd(memorySize);
     printf(";%lu", (etime - stime));
+
+    /*
+    printf("%lu;%lu", memorySize, STREAM_SIZE);
+    loadWarmup(memorySize);
+    loadKernel(memorySize);
+    printf(";%lu", (etime - stime));
+    */
 
     /*
     storeWarmup(memorySize);
