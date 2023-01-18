@@ -46,8 +46,17 @@
 #define STRIDE_ELEMENTS ((uint64_t)(1U))
 #endif
 
+#ifndef STRIDE_OFFSET
+#define STRIDE_OFFSET 8
+#endif
+
+#ifdef ONE_LOOP
+#define STREAM_PARTITION_START STACK_SIZE
+
+#else
 #define STREAM_PARTITION_START                                                 \
   ((uint64_t)(sizeof(STREAM_TYPE) * 8U * STRIDE_ELEMENTS * 2))
+#endif
 
 #ifdef BAREMETAL
 #include "firesim_encoding.h"
@@ -72,26 +81,61 @@ static STREAM_TYPE *streamB =
 
 #define getCopyElements(memorySize, kernelLoad)                                \
   ((memorySize) / (kernelLoad * sizeof(STREAM_TYPE)))
+#ifdef ONE_LOOP
+#define getCopyIterations(memorySize, kernelLoad)                              \
+  (((STREAM_SIZE / sizeof(STREAM_TYPE))) /                                     \
+   getCopyElements(memorySize, kernelLoad))
+#else
 #define getCopyIterations(memorySize, kernelLoad)                              \
   (((STREAM_SIZE / sizeof(STREAM_TYPE)) * STRIDE_ELEMENTS) /                   \
    getCopyElements(memorySize, kernelLoad))
+#endif
 
 #define loadKernel(memorySize)                                                 \
   {                                                                            \
     uint64_t const copyElements = getCopyElements(memorySize, 1);              \
     uint64_t const copyIterations = getCopyIterations(memorySize, 1);          \
     stime = myTime();                                                          \
+    int _test = 0;                                                             \
     for (n = 0; n < copyIterations; n++) {                                     \
       for (stream = 0; stream < copyElements;                                  \
            stream += (8 * STRIDE_ELEMENTS)) {                                  \
-        _use += streamA[stream + (0 * STRIDE_ELEMENTS)] +                      \
-                streamA[stream + (1 * STRIDE_ELEMENTS)] +                      \
-                streamA[stream + (2 * STRIDE_ELEMENTS)] +                      \
-                streamA[stream + (3 * STRIDE_ELEMENTS)] +                      \
-                streamA[stream + (4 * STRIDE_ELEMENTS)] +                      \
-                streamA[stream + (5 * STRIDE_ELEMENTS)] +                      \
-                streamA[stream + (6 * STRIDE_ELEMENTS)] +                      \
-                streamA[stream + (7 * STRIDE_ELEMENTS)];                       \
+        _use += streamA[STRIDE_ELEMENTS * 0];                                  \
+        _use += streamA[STRIDE_ELEMENTS * 1];                                  \
+        _use += streamA[STRIDE_ELEMENTS * 2];                                  \
+        _use += streamA[STRIDE_ELEMENTS * 3];                                  \
+        _use += streamA[STRIDE_ELEMENTS * 4];                                  \
+        _use += streamA[STRIDE_ELEMENTS * 5];                                  \
+        _use += streamA[STRIDE_ELEMENTS * 6];                                  \
+        _use += streamA[STRIDE_ELEMENTS * 7];                                  \
+      }                                                                        \
+    }                                                                          \
+    etime = myTime();                                                          \
+  }
+
+#define loadKernelNoAdd(memorySize)                                            \
+  {                                                                            \
+    uint64_t const copyElements = getCopyElements(memorySize, 1);              \
+    uint64_t const copyIterations = getCopyIterations(memorySize, 1);          \
+    stime = myTime();                                                          \
+    int _test = 0;                                                             \
+    for (n = 0; n < copyIterations; n++) {                                     \
+      for (stream = 0; stream < copyElements;                                  \
+           stream += (8 * STRIDE_ELEMENTS)) {                                  \
+        asm volatile("ld %0, %2(%1)\n"                                         \
+                     "ld %0, %3(%1)\n"                                         \
+                     "ld %0, %4(%1)\n"                                         \
+                     "ld %0, %5(%1)\n"                                         \
+                     "ld %0, %6(%1)\n"                                         \
+                     "ld %0, %7(%1)\n"                                         \
+                     "ld %0, %8(%1)\n"                                         \
+                     "ld %0, %9(%1)"                                           \
+                     : "=r"(_test)                                             \
+                     : "r"(stream), "i"(STRIDE_OFFSET * 0),                    \
+                       "i"(STRIDE_OFFSET * 1), "i"(STRIDE_OFFSET * 2),         \
+                       "i"(STRIDE_OFFSET * 3), "i"(STRIDE_OFFSET * 4),         \
+                       "i"(STRIDE_OFFSET * 5), "i"(STRIDE_OFFSET * 6),         \
+                       "i"(STRIDE_OFFSET * 7));                                \
       }                                                                        \
     }                                                                          \
     etime = myTime();                                                          \
@@ -179,7 +223,9 @@ int main() {
 
   printf("partition;size;load;\n");
 
+#ifndef ONE_LOOP
   while (memorySize <= STACK_SIZE) {
+#endif
 #ifdef DEBUG
     printf("[DEBUG] stacksize [%llu B]\n", STACK_SIZE);
     printf("[DEBUG][%lu B] strideElements %lu\n", memorySize, STRIDE_ELEMENTS);
@@ -191,7 +237,7 @@ int main() {
 
     printf("%lu;%lu", memorySize, STREAM_SIZE);
     loadWarmup(memorySize);
-    loadKernel(memorySize);
+    loadKernelNoAdd(memorySize);
     printf(";%lu", (etime - stime));
 
     /*
@@ -204,9 +250,11 @@ int main() {
     printf(";%lu\n", (etime - stime));
     */
 
+#ifndef ONE_LOOP
     memorySize *= 2;
   }
   printf("# [%lu]\n", _use);
+#endif
   printf("Done\n");
   return 0;
 }
