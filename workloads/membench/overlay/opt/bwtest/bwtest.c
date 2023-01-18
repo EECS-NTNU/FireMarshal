@@ -98,19 +98,19 @@ static STREAM_TYPE *streamB =
     uint64_t const copyElements = getCopyElements(memorySize, 1);              \
     uint64_t const copyIterations = getCopyIterations(memorySize, 1);          \
     stime = myTime();                                                          \
-	      for (n = 0; n < copyIterations; n++) {                                     \
-		            for (stream = 0; stream < copyElements;                                  \
-					               stream += (8 * STRIDE_ELEMENTS)) {                                  \
-				            _use += streamA[STRIDE_ELEMENTS * 0];                                  \
-				            _use += streamA[STRIDE_ELEMENTS * 1];                                  \
-				            _use += streamA[STRIDE_ELEMENTS * 2];                                  \
-				            _use += streamA[STRIDE_ELEMENTS * 3];                                  \
-				            _use += streamA[STRIDE_ELEMENTS * 4];                                  \
-				            _use += streamA[STRIDE_ELEMENTS * 5];                                  \
-				            _use += streamA[STRIDE_ELEMENTS * 6];                                  \
-				            _use += streamA[STRIDE_ELEMENTS * 7];                                  \
-				          }                                                                        \
-		          }                                                                          \
+    for (n = 0; n < copyIterations; n++) {                                     \
+      for (stream = 0; stream < copyElements;                                  \
+           stream += (8 * STRIDE_ELEMENTS)) {                                  \
+        _use += streamA[stream + (0 * STRIDE_ELEMENTS)] +                      \
+                streamA[stream + (1 * STRIDE_ELEMENTS)] +                      \
+                streamA[stream + (2 * STRIDE_ELEMENTS)] +                      \
+                streamA[stream + (3 * STRIDE_ELEMENTS)] +                      \
+                streamA[stream + (4 * STRIDE_ELEMENTS)] +                      \
+                streamA[stream + (5 * STRIDE_ELEMENTS)] +                      \
+                streamA[stream + (6 * STRIDE_ELEMENTS)] +                      \
+                streamA[stream + (7 * STRIDE_ELEMENTS)];                       \
+      }                                                                        \
+    }                                                                          \
     etime = myTime();                                                          \
   }
 
@@ -118,27 +118,30 @@ static STREAM_TYPE *streamB =
   {                                                                            \
     uint64_t const copyElements = getCopyElements(memorySize, 1);              \
     uint64_t const copyIterations = getCopyIterations(memorySize, 1);          \
-	STREAM_TYPE * stream_base = streamA;					\ 
+    STREAM_TYPE *stream_base = streamA;                                        \
+    int _tmp = 0;                                                              \
     stime = myTime();                                                          \
     for (n = 0; n < copyIterations; n++) {                                     \
       for (stream = 0; stream < copyElements;                                  \
            stream += (8 * STRIDE_ELEMENTS)) {                                  \
-	stream_base += stream; \ 
-        asm volatile("ld %0, %2(%1)\n"                                         \
-                     "ld %0, %3(%1)\n"                                         \
-                     "ld %0, %4(%1)\n"                                         \
-                     "ld %0, %5(%1)\n"                                         \
-                     "ld %0, %6(%1)\n"                                         \
-                     "ld %0, %7(%1)\n"                                         \
-                     "ld %0, %8(%1)\n"                                         \
-                     "ld %0, %9(%1)"                                           \
-                     : "=r"(_use)                                             \
-                     : "r"(stream_base), "i"(STRIDE_OFFSET * 0),                    \
+        asm volatile("ld %0, %4(%2)\n"                                         \
+                     "ld %0, %5(%2)\n"                                         \
+                     "ld %0, %3(%2)\n"                                         \
+                     "ld %0, %6(%2)\n"                                         \
+                     "ld %0, %7(%2)\n"                                         \
+                     "ld %0, %8(%2)\n"                                         \
+                     "ld %0, %9(%2)\n"                                         \
+                     "ld %0, %10(%2)\n"                                        \
+                     "addi %1, %1, %11"                                        \
+                     : "=r"(_tmp), "=r"(stream_base)                           \
+                     : "r"(stream_base), "i"(STRIDE_OFFSET * 0),               \
                        "i"(STRIDE_OFFSET * 1), "i"(STRIDE_OFFSET * 2),         \
                        "i"(STRIDE_OFFSET * 3), "i"(STRIDE_OFFSET * 4),         \
                        "i"(STRIDE_OFFSET * 5), "i"(STRIDE_OFFSET * 6),         \
-                       "i"(STRIDE_OFFSET * 7));                                \
+                       "i"(STRIDE_OFFSET * 7),                                 \
+                       "i"(STRIDE_OFFSET * sizeof(STREAM_TYPE)));              \
       }                                                                        \
+      stream_base = streamA;                                                   \
     }                                                                          \
     etime = myTime();                                                          \
   }
