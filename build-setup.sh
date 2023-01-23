@@ -15,6 +15,7 @@ usage() {
     echo "Options"
     echo "  --help -h              : Display this message"
     echo "  --unpinned-deps -ud    : Use unpinned conda environment"
+    echo "  --clean                : remove old conda environment"
     echo "  --skip-conda           : Skip conda env creation"
     echo "  --skip-repositories    : Skip building extra RISC-V toolchain collateral (Spike, PK, tests, libgloos)"
     exit "$1"
@@ -23,6 +24,7 @@ usage() {
 USE_PINNED_DEPS=true
 SKIP_CONDA=false
 SKIP_REPOSITORIES=false
+CLEAN=false
 
 RISCV_TOOLS="$(dirname $(readlink -f $0))/../../.conda-env/riscv-tools"
 
@@ -45,6 +47,8 @@ do
             SKIP_CONDA=true ;;
         --skip-repositories)
             SKIP_REPOSITORIES=true ;;
+        --clean)
+            CLEAN=true ;;
         * )
             error "invalid option $1"
             usage 1 ;;
@@ -55,6 +59,11 @@ done
 if [ "$SKIP_CONDA" = false ]; then
     # note: lock file must end in .conda-lock.yml - see https://github.com/conda-incubator/conda-lock/issues/154
     CONDA_REQS=$RDIR/conda-reqs
+
+    if [ "$CLEAN" = "true" ]; then
+        rm -vRf $RDIR/.conda-env
+    fi
+
     if [ "$USE_PINNED_DEPS" = false ]; then
         conda-lock -f $CONDA_REQS/firemarshal.yaml --lockfile $CONDA_REQS/firemarshal.conda-lock.yml
     fi
@@ -65,7 +74,10 @@ if [ "$SKIP_CONDA" = false ]; then
 fi
 
 if [ "$SKIP_REPOSITORIES" = false ]; then
-	$RDIR/init-submodules.sh
+    if [ "$CLEAN" = "true" ]; then
+        git submodule deinit --force --all
+    fi
+    git submodule update --init
 fi
 
 cat << EOT > env.sh
