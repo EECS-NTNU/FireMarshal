@@ -50,7 +50,7 @@ do
         --clean)
             CLEAN=true ;;
         * )
-            error "invalid option $1"
+            echo "invalid option $1" >&2
             usage 1 ;;
     esac
     shift
