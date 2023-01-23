@@ -46,4 +46,5 @@ dependencies:
     - readline
     - coreutils
     - lzop
-    - qemu # from ucb-bar channel - https://github.com/ucb-bar/qemu-feedstock
+    - git
+    - ucb-bar::qemu # from ucb-bar channel - https://github.com/ucb-bar/qemu-feedstock
