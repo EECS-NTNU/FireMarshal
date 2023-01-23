@@ -78,7 +78,7 @@ export PATH=\$(echo -n "\${PATH}" | tr ':' '\n' | grep -Fv '/.conda-env' | grep 
 
 # Populate environment
 conda activate ${RDIR}/.conda-env
-export PATH="${RISCV}/bin:\${PATH}"
+export PATH="\${RISCV}/bin:\${PATH}"
 
 
 # Safety checks
