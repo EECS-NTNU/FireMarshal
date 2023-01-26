@@ -1,0 +1,120 @@
+{
+    "name": "spec2017-pmapld-ref",
+    "base": "spec2017.json",
+    "workdir": "common",
+    "guest-init": "prepareGuest.sh /opt/spec2017 --suite spec2017 -v arch=ld.riscv-64 -v arch=ld.riscv-64 --input ref",
+    "rootfs-size": "0",
+    "outputs": [  "/opt/spec2017/output" ],
+    "jobs": [
+        {
+            "name": "500.perlbench_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf -v arch=ld.riscv-64 --input ref -- 500.perlbench_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "502.gcc_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf -v arch=ld.riscv-64 --input ref -- 502.gcc_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "503.bwaves_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf -v arch=ld.riscv-64 --input ref -- 503.bwaves_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "505.mcf_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf -v arch=ld.riscv-64 --input ref -- 505.mcf_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "507.cactuBSSN_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf -v arch=ld.riscv-64 --input ref -- 507.cactuBSSN_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "508.namd_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf -v arch=ld.riscv-64 --input ref -- 508.namd_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "510.parest_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf -v arch=ld.riscv-64 --input ref -- 510.parest_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "511.povray_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf -v arch=ld.riscv-64 --input ref -- 511.povray_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "519.lbm_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf -v arch=ld.riscv-64 --input ref -- 519.lbm_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "520.omnetpp_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf -v arch=ld.riscv-64 --input ref -- 520.omnetpp_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "521.wrf_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf -v arch=ld.riscv-64 --input ref -- 521.wrf_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "523.xalancbmk_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf -v arch=ld.riscv-64 --input ref -- 523.xalancbmk_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "525.x264_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf -v arch=ld.riscv-64 --input ref -- 525.x264_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "527.cam4_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf -v arch=ld.riscv-64 --input ref -- 527.cam4_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "531.deepsjeng_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf -v arch=ld.riscv-64 --input ref -- 531.deepsjeng_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "538.imagick_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf -v arch=ld.riscv-64 --input ref -- 538.imagick_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "541.leela_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf -v arch=ld.riscv-64 --input ref -- 541.leela_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "544.nab_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf -v arch=ld.riscv-64 --input ref -- 544.nab_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "548.exchange2_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf -v arch=ld.riscv-64 --input ref -- 548.exchange2_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "549.fotonik3d_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf -v arch=ld.riscv-64 --input ref -- 549.fotonik3d_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "554.roms_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf -v arch=ld.riscv-64 --input ref -- 554.roms_r",
+            "command": "/opt/spec2017/run.sh"
+        },
+        {
+            "name": "557.xz_r",
+            "guest-init": "prepareGuest.sh /opt/spec2017 --wrapper time --wrapper pmapelf -v arch=ld.riscv-64 --input ref -- 557.xz_r",
+            "command": "/opt/spec2017/run.sh"
+        }
+    ]
+}
