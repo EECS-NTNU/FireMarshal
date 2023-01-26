@@ -15,6 +15,7 @@ overlay/opt/$(SUITE)/extracted: $(SUITE).tar.zst
 	tar --use-compress-program=zstd --skip-old-files -xf $(SUITE).tar.zst -C overlay/opt
 	# Cleanup
 	find overlay/opt/$(SUITE) -mindepth 2 -maxdepth 2 -type f ! -name '*$(ARCH)' -exec rm -v {} \; || true
+	for f in $$(find overlay/opt/$(SUITE) -type l); do df=$$(readlink -f "$${f}"); rm -vRf "$${f}"; cp -va "$${df}" "$${f}"; done
 	# Touch extracted target
 	touch $@
 
