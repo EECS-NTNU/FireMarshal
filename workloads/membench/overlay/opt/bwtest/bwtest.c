@@ -18,8 +18,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#define DEBUG
-
 #include <stdint.h>
 #include <stdio.h>
 
@@ -223,10 +221,10 @@ static STREAM_TYPE *streamB =
 int main() {
   uint64_t memorySize = STREAM_PARTITION_START;
   uint64_t stream, n;
-  uint64_t stime, etime;
+  uint64_t stime, etime, benchmark_start_time, benchmark_end_time;
   uint64_t _use = 0;
 
-  printf("partition;size;load;\n");
+  printf("partition;size;store;\n");
 
 #ifndef ONE_LOOP
   while (memorySize <= STACK_SIZE) {
@@ -240,27 +238,39 @@ int main() {
            getCopyIterations(memorySize, 1));
 #endif
 
+#ifndef ONE_LOOP
     printf("%lu;%lu", memorySize, STREAM_SIZE);
     loadWarmup(memorySize);
     loadKernelNoAdd(memorySize);
     printf(";%lu", (etime - stime));
 
-    /*
     printf("%lu;%lu", memorySize, STREAM_SIZE);
     loadWarmup(memorySize);
     loadKernel(memorySize);
     printf(";%lu", (etime - stime));
-    */
+#endif
 
-    /*
+    printf("%lu;%lu", memorySize, STREAM_SIZE);
     storeWarmup(memorySize);
+#ifdef ONE_LOOP
+    benchmark_start_time = myTime();
+#endif
     storeKernel(memorySize);
+#ifdef ONE_LOOP
+    benchmark_end_time = myTime();
+#endif
     printf(";%lu", (etime - stime));
 
+    /*
     loadStoreWarmup(memorySize);
     loadStoreKernel(memorySize);
-    printf(";%lu\n", (etime - stime));
+    printf(";%lu", (etime - stime));
     */
+    printf("\n");
+#ifdef ONE_LOOP
+    printf("Benchmark Start time: %lu\n", benchmark_start_time);
+    printf("Benchmark End time: %lu\n", benchmark_end_time);
+#endif
 
 #ifndef ONE_LOOP
     memorySize *= 2;
