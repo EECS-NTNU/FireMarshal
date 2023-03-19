@@ -224,7 +224,7 @@ int main() {
   uint64_t stime, etime, benchmark_start_time, benchmark_end_time;
   uint64_t _use = 0;
 
-  printf("partition;size;store;\n");
+  printf("partition;size;load;store;loadstore\n");
 
 #ifndef ONE_LOOP
   while (memorySize <= STACK_SIZE) {
@@ -238,39 +238,37 @@ int main() {
            getCopyIterations(memorySize, 1));
 #endif
 
+printf("%lu;%lu", memorySize, STREAM_SIZE);
 #ifndef ONE_LOOP
-    printf("%lu;%lu", memorySize, STREAM_SIZE);
-    loadWarmup(memorySize);
-    loadKernelNoAdd(memorySize);
-    printf(";%lu", (etime - stime));
-
-    printf("%lu;%lu", memorySize, STREAM_SIZE);
     loadWarmup(memorySize);
     loadKernel(memorySize);
     printf(";%lu", (etime - stime));
-#endif
-
-    printf("%lu;%lu", memorySize, STREAM_SIZE);
     storeWarmup(memorySize);
-#ifdef ONE_LOOP
-    benchmark_start_time = myTime();
-#endif
     storeKernel(memorySize);
-#ifdef ONE_LOOP
-    benchmark_end_time = myTime();
-#endif
     printf(";%lu", (etime - stime));
-
-    /*
     loadStoreWarmup(memorySize);
     loadStoreKernel(memorySize);
     printf(";%lu", (etime - stime));
-    */
+#else
+    storeWarmup(memorySize);
+    benchmark_start_time = myTime();
+    storeKernel(memorySize);
+    benchmark_end_time = myTime();
+    printf(";%lu", (etime - stime));
+#endif
     printf("\n");
 #ifdef ONE_LOOP
     printf("Benchmark Start time: %lu\n", benchmark_start_time);
     printf("Benchmark End time: %lu\n", benchmark_end_time);
 #endif
+
+
+    /*
+    printf("%lu;%lu", memorySize, STREAM_SIZE);
+    loadWarmup(memorySize);
+    loadKernel(memorySize);
+    printf(";%lu", (etime - stime));
+    */
 
 #ifndef ONE_LOOP
     memorySize *= 2;
